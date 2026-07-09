@@ -22,49 +22,45 @@
 
     <div class="prompt-box">
         <strong>Guia de Consulta (Copie o prompt abaixo):</strong>
-        <textarea readonly>Atue como um nutricionista analítico. Analise os itens que consumi aplicando a estrutura 5W2H (What, Who, Where, When, Why, How, How much) para calcular macros e densidade calórica. Aqui está o que comi: [INSIRA SEUS ALIMENTOS AQUI]</textarea>
+        <textarea readonly>Atue como um nutricionista analítico. Analise os itens que consumi aplicando a estrutura 5W2H para calcular o Índice Glicêmico (IG) total e a carga glicêmica da refeição. Aqui está o que comi: [INSIRA SEUS ALIMENTOS AQUI]</textarea>
     </div>
 
     <div class="input-group">
+        <input type="date" id="data">
         <input type="text" id="alimento" placeholder="Alimento (What)">
         <input type="text" id="local" placeholder="Local (Where)">
         <input type="time" id="horario" placeholder="Horário (When)">
         <input type="text" id="objetivo" placeholder="Objetivo (Why)">
-        <input type="number" id="carb" placeholder="Carb (g)">
-        <input type="number" id="prot" placeholder="Prot (g)">
-        <input type="number" id="gord" placeholder="Gord (g)">
+        <input type="number" id="ig" placeholder="Índice Glicêmico (Est.)">
         <button onclick="adicionar()">Adicionar</button>
     </div>
 
     <table>
         <thead>
-            <tr><th>Alimento</th><th>Local</th><th>Horário</th><th>Objetivo</th><th>Carb</th><th>Prot</th><th>Gord</th></tr>
+            <tr><th>Data</th><th>Alimento</th><th>Local</th><th>Horário</th><th>Objetivo</th><th>IG Est.</th></tr>
         </thead>
         <tbody id="corpoTabela"></tbody>
         <tfoot>
-            <tr><th colspan="4">Total</th><th id="totalCarb">0</th><th id="totalProt">0</th><th id="totalGord">0</th></tr>
+            <tr><th colspan="5">Média de IG da Refeição</th><th id="totalIG">0</th></tr>
         </tfoot>
     </table>
 
     <script>
-        let tC=0, tP=0, tG=0;
+        let somaIG = 0, cont = 0;
         function adicionar() {
+            let data = document.getElementById('data').value;
             let alimento = document.getElementById('alimento').value;
             let local = document.getElementById('local').value;
             let horario = document.getElementById('horario').value;
             let objetivo = document.getElementById('objetivo').value;
-            let c = parseFloat(document.getElementById('carb').value) || 0;
-            let p = parseFloat(document.getElementById('prot').value) || 0;
-            let g = parseFloat(document.getElementById('gord').value) || 0;
+            let ig = parseFloat(document.getElementById('ig').value) || 0;
             
-            tC += c; tP += p; tG += g;
+            somaIG += ig; cont++;
             
-            let row = '<tr><td>' + alimento + '</td><td>' + local + '</td><td>' + horario + '</td><td>' + objetivo + '</td><td>' + c + '</td><td>' + p + '</td><td>' + g + '</td></tr>';
+            let row = '<tr><td>' + data + '</td><td>' + alimento + '</td><td>' + local + '</td><td>' + horario + '</td><td>' + objetivo + '</td><td>' + ig + '</td></tr>';
             document.getElementById('corpoTabela').innerHTML += row;
             
-            document.getElementById('totalCarb').innerText = tC;
-            document.getElementById('totalProt').innerText = tP;
-            document.getElementById('totalGord').innerText = tG;
+            document.getElementById('totalIG').innerText = (somaIG / cont).toFixed(1);
         }
     </script>
 </body>
